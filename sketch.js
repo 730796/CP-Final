@@ -14,6 +14,14 @@ const levelConfig = {
   width: 16,
   height: 16,
   pos: vec2(0,0),
+  "s": () => [
+    "start",
+    rect(2,2),
+    color(rgb(187,183,240)),
+    origin("center"),
+    opacity(0.5),
+    area(),
+  ],
   "r": () => [
     "road",
     //sprite(""),
@@ -21,11 +29,20 @@ const levelConfig = {
     color( rgb(112,67,35)),
     area(),
   ],
+  "t": () => [
+    "tree",
+    //sprite(),
+    rect(20,20),
+    color( rgb(28,117,31)),
+    area(),
+    solid(),
+  ],
   "b": () => [
     "mailBox",
     //sprite(""),
     rect(15,15),
     color(rgb(240,74,74)),
+    origin("center"),
     area(),
     solid(),
   ],
@@ -33,13 +50,32 @@ const levelConfig = {
 }
 const levels = [
   [
-    "b    b            ",
-    "                  ",
-    "        rr      rr",
-    "        rr       ",
-    "        rr       ",
-    "        rr       ",
-    "        rr        ",
+    //start
+    "tb    b            ",
+    "t                  ",
+    "t        rr      rr",
+    "t        rr       ",
+    "t        rr       ",
+    "t        rr       ",
+    "t        rr        ",
+    "t                  ",
+    "t         s",
+    "t",
+    "t",
+    "t",
+    "t",
+    "t",
+    "tttttttttttttttttttttt",
+    "tttttttttttttttttttttt",
+    "tttttttttttttttttttttt",
+  ],
+  [
+    //town
+    "",
+    "",
+    "",
+    "",
+    "",
   ],
 ]
 
@@ -150,13 +186,37 @@ scene("controls", () => {
 })
 scene("game", () => {
   let level = addLevel(levels[0],levelConfig)
+  const player = add([
+    "player",
+    //sprite(),
+    rect(17,17),
+    pos(150,height()-100),
+    area(),
+    solid(),
+    origin("center"),
+    { "speed": 100 }
+  ])
+  onUpdate("start",(s) => {
+    player.pos = s.pos
+  })
+  const mailBoxC = add([
+    "MBcover",
+    rect(15,15),
+    pos(0,0),
+    opacity(0.5),
+    origin("center"),
+    area(),
+  ])
+  onUpdate("mailBox",(b) => {
+    mailBoxC.pos = b.pos
+  })
   const letter = add([
     "letter",
     sprite("mail",{
       width: 50,
       height: 50,
     }),
-    pos(55,25),
+    pos(40,25),
     origin("center"),
     z(1),
     fixed(),
@@ -166,21 +226,18 @@ scene("game", () => {
     "mailCounter",
     text("x" + mail,{
       size: 20 }),
-    pos(75,25),
+    pos(60,25),
     origin("left"),
     fixed(),
     z(1),
   ])
-  const player = add([
-    "player",
-    //sprite(),
-    rect(17,17),
-    pos(150,height()-100),
+  /*add([
+    "test",
+    rect(10,10),
+    pos(10,10),
     area(),
-    solid(),
-    origin("bot"),
-    { "speed": 100 }
-  ])
+    fixed(),
+  ])*/
   if (move == true) {
     onKeyDown(["d","right"],() => {
       player.move(player.speed,0)
@@ -210,13 +267,20 @@ scene("game", () => {
     })
   }
   onUpdate(() => {
+    //camPos(player.pos)
     if (player.pos.y<height()/2+25)
     camPos(player.pos.x,player.pos.y-25) 
   })
-  onClick("mailBox", () => {
+  onClick("mailBoxC", () => {
     mail -= 1
     mailCounter.text = "x"+mail
+    destroy(mailBoxC)
+    //localStorage.setItem("mail",mail)
   })
+  /*onClick("test", () => {
+    mail = localStorage.getItem("mail")
+  }) */
 })
 
-go("menu")
+go("game")
+
