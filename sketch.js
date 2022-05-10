@@ -79,7 +79,8 @@ const levels = [
   ],
 ]
 
-let move = true
+
+let mail = 5
 
 scene("menu", () => {
   add([
@@ -101,10 +102,10 @@ scene("menu", () => {
     area(),
   ])
   onClick("play",() => {
-    gp("game")
+    go("game")
   })
   add([
-    "continue",
+    "resume",
     text("resume",{
       size: 15}),
     pos(width()/2,height()/2+20),
@@ -112,7 +113,8 @@ scene("menu", () => {
     area(),
   ])
   onClick("resume",() => {
-    
+    mail = localStorage.getItem("mail")
+    go("game")
   })
   add([
     "controls",
@@ -199,8 +201,9 @@ scene("game", () => {
   onUpdate("start",(s) => {
     player.pos = s.pos
   })
+  let move = true
   const mailBoxC = add([
-    "MBcover",
+    "mailBoxC",
     rect(15,15),
     pos(0,0),
     opacity(0.5),
@@ -221,7 +224,6 @@ scene("game", () => {
     z(1),
     fixed(),
   ])
-  let mail = 5
   let mailCounter = add([
     "mailCounter",
     text("x" + mail,{
@@ -231,13 +233,6 @@ scene("game", () => {
     fixed(),
     z(1),
   ])
-  /*add([
-    "test",
-    rect(10,10),
-    pos(10,10),
-    area(),
-    fixed(),
-  ])*/
   if (move == true) {
     onKeyDown(["d","right"],() => {
       player.move(player.speed,0)
@@ -266,6 +261,19 @@ scene("game", () => {
       player.move(0,player.speed)
     })
   }
+  else 
+    onKeyDown(["d","right"],() => {
+      player.move(0,0)
+    })
+    onKeyDown(["a","left"],() => {
+      player.move(0,0)
+    })
+    onKeyDown(["w","up"],() => {
+      player.move(0,0)
+    })
+    onKeyDown(["s","down"],() => {
+      player.move(0,0)
+    })
   onUpdate(() => {
     //camPos(player.pos)
     if (player.pos.y<height()/2+25)
@@ -275,12 +283,36 @@ scene("game", () => {
     mail -= 1
     mailCounter.text = "x"+mail
     destroy(mailBoxC)
-    //localStorage.setItem("mail",mail)
+    localStorage.setItem("mail",mail)
   })
-  /*onClick("test", () => {
+  onClick("test", () => {
     mail = localStorage.getItem("mail")
-  }) */
+  }) 
+  
+  //pause stuff
+  add([
+    "pause",
+    //sprite(),
+    rect(10,10),
+    pos(100,50),
+    origin("center"),
+    fixed(),
+    area(),
+    z(1),
+  ])
+  onClick("pause",() => {
+  add([
+      "pauseScr",
+      rect(width()-200,height()-70),
+      pos(100,35),
+      //origin("top"),
+      fixed(),
+      opacity(0.5),
+      z(2),
+    ])
+    console.log("lol")
+    move = false
+  })
 })
 
 go("game")
-
