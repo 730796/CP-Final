@@ -233,35 +233,41 @@ scene("game", () => {
     fixed(),
     z(1),
   ])
-  if (move == true) {
-    onKeyDown(["d","right"],() => {
+  onKeyDown(["d","right"],() => {
+    if (move == true) {
       player.move(player.speed,0)
-      //player.flipX(false)
-    })
-    /* onKeyPress(["d","right"],() => {
+      //player.flipX(false) 
+    }
+  })
+  /* onKeyPress(["d","right"],() => {
       //player.play("run")
     })
   onKeyRelease(["d","right"],() => {
     //player.play("idle")
   }) */
-    onKeyDown(["a","left"],() => {
+  onKeyDown(["a","left"],() => {
+    if (move == true) {
       player.move(-player.speed,0)
       //player.flipX(true)
-    })
+    }
+  })
     /* onKeyPress(["a","left"],() => {
       //player.play("run")
     })
   onKeyRelease(["a","left"],() => {
     //player.play("idle")
   }) */
-    onKeyDown(["w","up"],() => {
+  onKeyDown(["w","up"],() => {
+    if (move == true) {
       player.move(0,-player.speed)
-    })
-    onKeyDown(["s","down"],() => {
+    }
+  })
+  onKeyDown(["s","down"],() => {
+    if (move == true) {
       player.move(0,player.speed)
-    })
-  }
-  else 
+    }
+  })
+  /* else 
     onKeyDown(["d","right"],() => {
       player.move(0,0)
     })
@@ -273,7 +279,7 @@ scene("game", () => {
     })
     onKeyDown(["s","down"],() => {
       player.move(0,0)
-    })
+    }) */
   onUpdate(() => {
     //camPos(player.pos)
     if (player.pos.y<height()/2+25)
@@ -285,12 +291,11 @@ scene("game", () => {
     destroy(mailBoxC)
     localStorage.setItem("mail",mail)
   })
-  onClick("test", () => {
+  /* onClick("test", () => {
     mail = localStorage.getItem("mail")
-  }) 
-  
-  //pause stuff
-  add([
+  }) */
+  // pause stuff
+  const pause = add([
     "pause",
     //sprite(),
     rect(10,10),
@@ -301,7 +306,8 @@ scene("game", () => {
     z(1),
   ])
   onClick("pause",() => {
-  add([
+    move = false
+    add([
       "pauseScr",
       rect(width()-200,height()-70),
       pos(100,35),
@@ -310,9 +316,22 @@ scene("game", () => {
       opacity(0.5),
       z(2),
     ])
-    console.log("lol")
-    move = false
+    destroy(pause)
+    add([
+      "paused",
+      text("paused",{
+        size: 25 }),
+      pos(width()/2,height()/2-50),
+      origin("center"),
+      fixed(),
+      area(),
+      z(3),
+    ])
   })
 })
 
 go("game")
+
+
+
+
