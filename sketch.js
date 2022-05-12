@@ -251,9 +251,9 @@ scene("game", () => {
       //player.flipX(true)
     }
   })
-    /* onKeyPress(["a","left"],() => {
-      //player.play("run")
-    })
+  /* onKeyPress(["a","left"],() => {
+    //player.play("run")
+  })
   onKeyRelease(["a","left"],() => {
     //player.play("idle")
   }) */
@@ -267,19 +267,6 @@ scene("game", () => {
       player.move(0,player.speed)
     }
   })
-  /* else 
-    onKeyDown(["d","right"],() => {
-      player.move(0,0)
-    })
-    onKeyDown(["a","left"],() => {
-      player.move(0,0)
-    })
-    onKeyDown(["w","up"],() => {
-      player.move(0,0)
-    })
-    onKeyDown(["s","down"],() => {
-      player.move(0,0)
-    }) */
   onUpdate(() => {
     //camPos(player.pos)
     if (player.pos.y<height()/2+25)
@@ -295,19 +282,30 @@ scene("game", () => {
     mail = localStorage.getItem("mail")
   }) */
   // pause stuff
-  const pause = add([
-    "pause",
+  let show = true
+  po = 0
+  if (show == true){
+    po = 1
+  }
+  else {
+    po = 0
+  }
+  const pauseBtn = add([
+    "pauseBtn",
     //sprite(),
     rect(10,10),
-    pos(100,50),
+    color(rgb(30,80,218)),
+    opacity(po),
+    pos(width()-25,25),
     origin("center"),
     fixed(),
     area(),
     z(1),
   ])
-  onClick("pause",() => {
+  onClick("pauseBtn",() => {
     move = false
-    add([
+    show = false
+    const ps = add([
       "pauseScr",
       rect(width()-200,height()-70),
       pos(100,35),
@@ -316,17 +314,47 @@ scene("game", () => {
       opacity(0.5),
       z(2),
     ])
-    destroy(pause)
-    add([
+    const p = add([
       "paused",
       text("paused",{
         size: 25 }),
-      pos(width()/2,height()/2-50),
+      pos(width()/2,height()/2-60),
       origin("center"),
       fixed(),
       area(),
       z(3),
     ])
+    const m = add([
+      "menu",
+      text("menu",{
+        size: 20  }),
+      origin("center"),
+      pos(width()/2,height()/2-8),
+      fixed(),
+      area(),
+      z(3),
+    ])
+    onClick("menu",() => {
+      go("menu")
+    })
+    const c = add([
+      "continue",
+      text("continue",{
+        size: 20  }),
+      origin("center"),
+      pos(width()/2,height()/2+15),
+      fixed(),
+      area(),
+      z(3),
+    ])
+    onClick("continue",() => {
+      destroy(ps)
+      destroy(p)
+      destroy(m)
+      destroy(c)
+      move = true
+      po = 1
+    })
   })
 })
 
