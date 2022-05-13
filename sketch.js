@@ -46,13 +46,22 @@ const levelConfig = {
     area(),
     solid(),
   ],
+  "v": () => [
+    "villager1",
+    //sprite(),
+    rect(15,20),
+    color(rgb(87,136,250)),
+    origin("center"),
+    area(),
+    solid(),
+  ],
   
 }
 const levels = [
   [
     //start
     "tb    b            ",
-    "t                  ",
+    "t             v    ",
     "t        rr      rr",
     "t        rr       ",
     "t        rr       ",
@@ -79,10 +88,10 @@ const levels = [
   ],
 ]
 
-
-let mail = 5
+let mail = 1
 
 scene("menu", () => {
+  mail = 5
   add([
     "title",
     text("delivery",{
@@ -102,6 +111,7 @@ scene("menu", () => {
     area(),
   ])
   onClick("play",() => {
+    let mail = 5
     go("game")
   })
   add([
@@ -281,21 +291,29 @@ scene("game", () => {
   /* onClick("test", () => {
     mail = localStorage.getItem("mail")
   }) */
+  //talking
+  let talking = false
+  onClick("villager1",() => {
+    move = false
+    talking = true
+    const talkingScr = add([
+      "talkingScr",
+      rect(width()-200,height()/2+10),
+      pos(100,height()/2+5),
+      //origin("top"),
+      fixed(),
+      opacity(0.5),
+      z(2),
+    ])
+  })
   // pause stuff
   let show = true
-  po = 0
-  if (show == true){
-    po = 1
-  }
-  else {
-    po = 0
-  }
   const pauseBtn = add([
     "pauseBtn",
     //sprite(),
     rect(10,10),
     color(rgb(30,80,218)),
-    opacity(po),
+    opacity(1),
     pos(width()-25,25),
     origin("center"),
     fixed(),
@@ -305,6 +323,9 @@ scene("game", () => {
   onClick("pauseBtn",() => {
     move = false
     show = false
+    if (show == false){
+      pauseBtn.opacity = 0
+    }
     const ps = add([
       "pauseScr",
       rect(width()-200,height()-70),
@@ -348,12 +369,15 @@ scene("game", () => {
       z(3),
     ])
     onClick("continue",() => {
+      show = true
+      move = true
       destroy(ps)
       destroy(p)
       destroy(m)
       destroy(c)
-      move = true
-      po = 1
+      if (show == true){
+        pauseBtn.opacity = 1
+      }
     })
   })
 })
