@@ -3,6 +3,9 @@ kaboom({
   background: [185, 235, 227],
 })
 
+/* loadSpriteAtlas("roguelike.png",{
+  
+}) */
 loadSprite("mail","mail.png") 
 /* https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fimage-vector%2Fenvelope-pixel-art-style-icon-isolated-760894363&psig=AOvVaw2uo_NTRaT200GsHqPubK3u&ust=1651675929553000&source=images&cd=vfe&ved=2ahUKEwj6keW5ysP3AhUOC80KHde1CC8Qr4kDegUIARDwAQ */ //Image Credits
 loadSprite("arrows","arrows.png")
@@ -88,7 +91,7 @@ const levels = [
   ],
 ]
 
-let mail = 1
+let mail = 5
 
 scene("menu", () => {
   mail = 5
@@ -292,19 +295,46 @@ scene("game", () => {
     mail = localStorage.getItem("mail")
   }) */
   //talking
-  let talking = false
+  let talking = true
   onClick("villager1",() => {
     move = false
-    talking = true
-    const talkingScr = add([
-      "talkingScr",
-      rect(width()-200,height()/2+10),
-      pos(100,height()/2+5),
-      //origin("top"),
-      fixed(),
-      opacity(0.5),
-      z(2),
-    ])
+    if (talking == true){
+      talkSl = 1
+      words = "hi"
+      const talkingScr = add([
+        "talkingScr",
+        rect(width()-200,height()/2+10),
+        pos(100,height()/2+5),
+        //origin("top"),
+        area(),
+        fixed(),
+        opacity(0.5),
+        z(2),
+      ])
+      const speach = add([
+        "speach",
+        text(words,{
+          size: 20
+        }),
+        pos(100,height()/2+5),
+        fixed(),
+        area(),
+        z(3),
+      ])
+      
+      onClick("talkingScr",() => {
+        talkSl += 1
+        if (talkSl == 1){
+          words = "hi"
+        }
+        if (talkSl == 2){
+          words = "bye"
+        }
+        if (talkSl == 3){
+          words = "lol"
+        }
+      })
+    }
   })
   // pause stuff
   let show = true
@@ -323,6 +353,7 @@ scene("game", () => {
   onClick("pauseBtn",() => {
     move = false
     show = false
+    talking = false
     if (show == false){
       pauseBtn.opacity = 0
     }
@@ -371,6 +402,7 @@ scene("game", () => {
     onClick("continue",() => {
       show = true
       move = true
+      talking = true
       destroy(ps)
       destroy(p)
       destroy(m)
