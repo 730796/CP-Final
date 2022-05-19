@@ -1,17 +1,32 @@
 kaboom({
-  scale: 3,
+  scale: 2.25,
   background: [185, 235, 227],
 })
 
-/* loadSpriteAtlas("roguelike.png",{
-  
-}) */
+loadSpriteAtlas("rpg.png", {
+// Start at 0
+  "grass": {
+    x: 85,
+    y: 17,
+    width: 16,
+    height: 16,
+  },
+  "dirt": {
+    x: 102,
+    y: 0,
+    width: 16,
+    height: 16,
+  },
+})
+
 loadSprite("mail","mail.png") 
 /* https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fimage-vector%2Fenvelope-pixel-art-style-icon-isolated-760894363&psig=AOvVaw2uo_NTRaT200GsHqPubK3u&ust=1651675929553000&source=images&cd=vfe&ved=2ahUKEwj6keW5ysP3AhUOC80KHde1CC8Qr4kDegUIARDwAQ */ //Image Credits
 loadSprite("arrows","arrows.png")
 loadSprite("clickL","mouseClickL.png")
 loadSprite("wasd","wasd.png")
 /* https://www.google.com/url?sa=i&url=https%3A%2F%2Fegordorichev.itch.io%2Fkey-set&psig=AOvVaw3jcCql48NjbPCr-drE1WhN&ust=1651845757795000&source=images&cd=vfe&ved=0CA0QjhxqFwoTCMielLfDyPcCFQAAAAAdAAAAABAI */
+loadSprite("pauseBtn","pause.png")
+/*https://www.iconfinder.com/icons/2433325/music_pause_plug_plugin_stop_ui_play_icon */
 
 const levelConfig = {
   width: 16,
@@ -27,9 +42,7 @@ const levelConfig = {
   ],
   "r": () => [
     "road",
-    //sprite(""),
-    rect(20,20),
-    color( rgb(112,67,35)),
+    sprite("dirt"),
     area(),
   ],
   "t": () => [
@@ -203,8 +216,8 @@ scene("game", () => {
   let level = addLevel(levels[0],levelConfig)
   const player = add([
     "player",
-    //sprite(),
-    rect(17,17),
+    sprite("grass"),
+    //rect(17,17),
     pos(150,height()-100),
     area(),
     solid(),
@@ -229,10 +242,10 @@ scene("game", () => {
   const letter = add([
     "letter",
     sprite("mail",{
-      width: 50,
-      height: 50,
+      width: 75,
+      height: 75,
     }),
-    pos(40,25),
+    pos(50,35),
     origin("center"),
     z(1),
     fixed(),
@@ -240,8 +253,8 @@ scene("game", () => {
   let mailCounter = add([
     "mailCounter",
     text("x" + mail,{
-      size: 20 }),
-    pos(60,25),
+      size: 25 }),
+    pos(75,35),
     origin("left"),
     fixed(),
     z(1),
@@ -291,9 +304,6 @@ scene("game", () => {
     destroy(mailBoxC)
     localStorage.setItem("mail",mail)
   })
-  /* onClick("test", () => {
-    mail = localStorage.getItem("mail")
-  }) */
   //talking
   let talking = true
   onClick("villager1",() => {
@@ -340,9 +350,10 @@ scene("game", () => {
   let show = true
   const pauseBtn = add([
     "pauseBtn",
-    //sprite(),
-    rect(10,10),
-    color(rgb(30,80,218)),
+    sprite("pauseBtn",{
+      width: 20,
+      height: 20,
+    }),
     opacity(1),
     pos(width()-25,25),
     origin("center"),
