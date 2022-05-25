@@ -1,3 +1,5 @@
+// I did not completely finish this. I do plan on finishing this project but I'm just not there yet. I all of the basic functions done but I want to continue working on visuals and tweaking certain mechanics.
+
 kaboom({
   scale: 2.25,
   background: [185, 235, 227],
@@ -185,15 +187,33 @@ const levelConfig = {
     area(),
     solid(),
   ],
-  "[": () => [
+  "f": () => [
+    "fence",
+    sprite("fence"),
+    area(),
+    solid(),
+  ],
+  "C": () => [
     "fence",
     sprite("fenceSL"),
     area(),
     solid(),
   ],
-  "]": () => [
+  "D": () => [
     "fence",
     sprite("fenceSR"),
+    area(),
+    solid(),
+  ],
+  "c": () => [
+    "fence",
+    sprite("fenceL"),
+    area(),
+    solid(),
+  ],
+  "d": () => [
+    "fence",
+    sprite("fenceR"),
     area(),
     solid(),
   ],
@@ -202,23 +222,24 @@ const levelConfig = {
 const levels = [
   [
     //start
-    "tb    b            ",
-    "t             v    ",
-    "t        LR      rr",
-    "t        <>       ",
-    "t        <>       ",
-    "t        <>       ",
-    "t        lr        ",
-    "t                  ",
-    "t         s",
-    "t        ",
-    "t      /\",
-    "t      [] ",
-    "t      \/",
-    "t",
-    "tttttttttttttttttttttt",
-    "tttttttttttttttttttttt",
-    "tttttttttttttttttttttt",
+    "cffffffffffffffffffffffffff",
+    "Cb    b            ",
+    "C             v    ",
+    "C        LR      ",
+    "C        <>       ",
+    "C        <>       ",
+    "C        <>       ",
+    "C        lr        ",
+    "C                  ",
+    "C         s",
+    "C        ",
+    "C        ",
+    "C        ",
+    "C      ",
+    "C",
+    "C",
+    "C",
+    "cfffffffffffffffffffff",
   ],
   [
     //town
@@ -584,3 +605,7 @@ scene("game", () => {
 })
 
 go("game")
+
+
+
+
