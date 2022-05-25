@@ -12,13 +12,92 @@ loadSpriteAtlas("rpg.png", {
     height: 16,
   },
   "dirt": {
-    x: 102,
-    y: 0,
+    x: 136,
+    y: 170,
+    width: 16,
+    height: 16,
+  },
+  "dirtT": {
+    x: 136,
+    y: 153,
+    width: 16,
+    height: 16,
+  },
+  "dirtTR": {
+    x: 153,
+    y: 153,
+    width: 16,
+    height: 16,
+  },
+  "dirtR": {
+    x: 153,
+    y: 170,
+    width: 16,
+    height: 16,
+  },
+  "dirtBR": {
+    x: 153,
+    y: 187,
+    width: 16,
+    height: 16,
+  },
+  "dirtB": {
+    x: 136,
+    y: 187,
+    width: 16,
+    height: 16,
+  },
+  "dirtBL": {
+    x: 119,
+    y: 187,
+    width: 16,
+    height: 16,
+  },
+  "dirtL": {
+    x: 119,
+    y: 170,
+    width: 16,
+    height: 16,
+  },
+  "dirtTL": {
+    x: 119,
+    y: 153,
+    width: 16,
+    height: 16,
+  },
+  "fence": {
+    x: 884,
+    y: 391,
+    width: 16,
+    height: 16,
+  },
+  "fenceL": {
+    x: 816,
+    y: 391,
+    width: 16,
+    height: 16,
+  },
+  "fenceR": {
+    x: 833,
+    y: 391,
+    width: 16,
+    height: 16,
+  },
+  "fenceSL": {
+    x: 867,
+    y: 391,
+    width: 16,
+    height: 16,
+  },
+  "fenceSR": {
+    x: 850,
+    y: 391,
     width: 16,
     height: 16,
   },
 })
 
+loadSprite("bkg","grass.png")
 loadSprite("mail","mail.png") 
 /* https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fimage-vector%2Fenvelope-pixel-art-style-icon-isolated-760894363&psig=AOvVaw2uo_NTRaT200GsHqPubK3u&ust=1651675929553000&source=images&cd=vfe&ved=2ahUKEwj6keW5ysP3AhUOC80KHde1CC8Qr4kDegUIARDwAQ */ //Image Credits
 loadSprite("arrows","arrows.png")
@@ -40,9 +119,44 @@ const levelConfig = {
     opacity(0.5),
     area(),
   ],
+  "^": () => [
+    "road",
+    sprite("dirtT"),
+    area(),
+  ],
+  "R": () => [
+    "road",
+    sprite("dirtTR"),
+    area(),
+  ],
+  ">": () => [
+    "road",
+    sprite("dirtR"),
+    area(),
+  ],
   "r": () => [
     "road",
-    sprite("dirt"),
+    sprite("dirtBR"),
+    area(),
+  ],
+  "V": () => [
+    "road",
+    sprite("dirtB"),
+    area(),
+  ],
+  "l": () => [
+    "road",
+    sprite("dirtBL"),
+    area(),
+  ],
+  "<": () => [
+    "road",
+    sprite("dirtL"),
+    area(),
+  ],
+  "L": () => [
+    "road",
+    sprite("dirtTL"),
     area(),
   ],
   "t": () => [
@@ -71,6 +185,18 @@ const levelConfig = {
     area(),
     solid(),
   ],
+  "[": () => [
+    "fence",
+    sprite("fenceSL"),
+    area(),
+    solid(),
+  ],
+  "]": () => [
+    "fence",
+    sprite("fenceSR"),
+    area(),
+    solid(),
+  ],
   
 }
 const levels = [
@@ -78,17 +204,17 @@ const levels = [
     //start
     "tb    b            ",
     "t             v    ",
-    "t        rr      rr",
-    "t        rr       ",
-    "t        rr       ",
-    "t        rr       ",
-    "t        rr        ",
+    "t        LR      rr",
+    "t        <>       ",
+    "t        <>       ",
+    "t        <>       ",
+    "t        lr        ",
     "t                  ",
     "t         s",
-    "t",
-    "t",
-    "t",
-    "t",
+    "t        ",
+    "t      /\",
+    "t      [] ",
+    "t      \/",
     "t",
     "tttttttttttttttttttttt",
     "tttttttttttttttttttttt",
@@ -213,10 +339,42 @@ scene("controls", () => {
   ])
 })
 scene("game", () => {
+  //backgroud
+  m = 150
+  add([
+    "background",
+    sprite("bkg"),
+    pos(m,m),
+  ])
+  add([
+    "background",
+    sprite("bkg"),
+    origin("botleft"),
+    pos(m,m),
+  ])
+  add([
+    "background",
+    sprite("bkg"),
+    origin("botright"),
+    pos(m,m),
+  ])
+  add([
+    "background",
+    sprite("bkg"),
+    origin("topright"),
+    pos(m,m),
+  ])
   let level = addLevel(levels[0],levelConfig)
+  add([
+    sprite("fenceSR"),
+    //rect(17,17),
+    pos(150,height()-100),
+    area(),
+    solid(),
+    origin("center"),])
   const player = add([
     "player",
-    sprite("grass"),
+    sprite("dirt"),
     //rect(17,17),
     pos(150,height()-100),
     area(),
@@ -294,9 +452,9 @@ scene("game", () => {
     }
   })
   onUpdate(() => {
-    //camPos(player.pos)
-    if (player.pos.y<height()/2+25)
-    camPos(player.pos.x,player.pos.y-25) 
+    camPos(player.pos)
+    //if (player.pos.y<height()/2+25)
+    //camPos(player.pos.x,player.pos.y-25) 
   })
   onClick("mailBoxC", () => {
     mail -= 1
@@ -426,7 +584,3 @@ scene("game", () => {
 })
 
 go("game")
-
-
-
-
